@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1545550671586.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "AD4A7044",
+    "lastKnownWriteTime" : 1545550670,
+    "last_content_update" : 1545550670,
+    "path" : "/media/rachita/Ubuntu/R/CostEstimation/app.R",
+    "project_path" : "CostEstimation/app.R",
+    "properties" : {
+        "cursorPosition" : "50,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

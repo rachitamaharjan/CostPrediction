@@ -1,0 +1,4 @@
+"0","library(caret)"
+"0","library(dplyr)"
+"0","insurance <- readRDS(""insurance.rds"")"
+"0","#View(insurance)"

@@ -1,0 +1,85 @@
+---
+title: "blah"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+#library(tidyverse)
+r<-read.csv("insurance.csv")
+r
+y<-r[1:10 , 1:2]
+y
+```
+#Loading packages
+
+```{r}
+library(dplyr)
+library(ggplot2)
+insurance<-read.csv("insurance.csv")
+insurance
+str(insurance)
+is.na(insurance) #how many empty
+table(is.na(insurance)) #total numbers
+head(insurance)  #first 6 values
+head(insurance, 10)
+tail(insurance)  #last 6 values
+tail(insurance, 10)
+colSums(is.na(insurance)) #adds true and false values i.e 1 and 0 i.e total missing values 
+
+#imputation
+insurance$age[is.na(insurance$age)] <- median(insurance$age,na.rm = TRUE)
+insurance$charges[is.na(insurance$charges)] <- median(insurance$charges,na.rm = TRUE)
+
+Mode <- function(x){
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x,ux)))]
+}
+insurance$region[is.na(insurance$region)] <- Mode(insurance$region)
+summary(insurance)
+```
+```{r}
+
+#avg_charge <-rename(avg_charge, charge = "mean(charges)")
+#ggplot(data = avg_charge)+geom_col(aes(x=smoker, y=charge, fill =smoker))
+```
+
+```{r}
+ggplot(data = insurance)+geom_boxplot(aes(x=sex, y=charges))
+```
+
+```{r}
+ggplot(data = insurance) + geom_point(aes(x=bmi, y=charges, color=smoker))+facet_wrap(~sex,ncol=2)
+```
+
+```{r}
+sex_region_df <- as.data.frame(table(insurance$sex, insurance$region))
+ggplot(data=sex_region_df) +geom_col(aes(Var1,Freq,fill=Var1))+labs(x="gender",y="count",title = "gender distribution on the basis of region") +facet_wrap(~Var2)
+```
+
+```{r}
+
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

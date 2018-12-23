@@ -1,0 +1,118 @@
+---
+title: "blah"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+#library(tidyverse)
+r<-read.csv("insurance.csv")
+r
+y<-r[1:10 , 1:2]
+y
+```
+#Loading packages
+
+```{r}
+library(dplyr)
+library(ggplot2)
+insurance<-read.csv("insurance.csv")
+insurance
+str(insurance)
+is.na(insurance) #how many empty
+table(is.na(insurance)) #total numbers
+head(insurance)  #first 6 values
+head(insurance, 10)
+tail(insurance)  #last 6 values
+tail(insurance, 10)
+colSums(is.na(insurance)) #adds true and false values i.e 1 and 0 i.e total missing values 
+
+#imputation
+insurance$age[is.na(insurance$age)] <- median(insurance$age,na.rm = TRUE)
+insurance$charges[is.na(insurance$charges)] <- median(insurance$charges,na.rm = TRUE)
+
+Mode <- function(x){
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x,ux)))]
+}
+insurance$region[is.na(insurance$region)] <- Mode(insurance$region)
+summary(insurance)
+```
+```{r}
+
+#avg_charge <-rename(avg_charge, charge = "mean(charges)")
+#ggplot(data = avg_charge)+geom_col(aes(x=smoker, y=charge, fill =smoker))
+```
+
+```{r}
+ggplot(data = insurance)+geom_boxplot(aes(x=sex, y=charges))
+```
+
+```{r}
+ggplot(data = insurance) + geom_point(aes(x=bmi, y=charges, color=smoker))+facet_wrap(~sex,ncol=2)
+```
+
+```{r}
+sex_region_df <- as.data.frame(table(insurance$sex, insurance$region))
+ggplot(data=sex_region_df) +geom_col(aes(Var1,Freq,fill=Var1))+labs(x="gender",y="count",title = "gender distribution on the basis of region") +facet_wrap(~Var2)
+```
+
+```{r}
+#rds is easy to load
+
+saveRDS(insurance,"insurance.rds")
+```
+```{r}
+library(caret)
+library(dplyr)
+insurance <- readRDS("insurance.rds")
+
+#View(insurance)
+```
+
+```{r}
+#for prediction
+set.seed(101) #set seed to produce sample even in the future
+sample <- sample.int(n= nrow(insurance), size = floor(.75*nrow(insurance)), replace = FALSE)
+train_df <- insurance[sample,] #75% data for training
+test_df <- insurance[-sample,] #remaining data for testing
+real_charges <- select(test_df, charges)
+test_df <- select(test_df,-charges)
+
+summary(ins_model) #refer note
+```
+
+```{r}
+ins_model <- train(charges ~ .,train_df, method="lm")
+```
+```{r}
+cor(predict(ins_model, test_df), real_charges)
+real_charges$prediction <- predict(ins_model,test_df)
+head(real_charges)
+```
+
+```{r}
+#improve model
+#makes a new column for the obese using obesity indicating factor for improvement of prediction of cost for bmi i.r correlation between bmi and cost
+train_df$bmi30 <- ifelse(train_df$bmi >= 30, 1,0)
+test_df$bmi30 <- ifelse(test_df$bmi >= 30, 1,0)
+
+#using square of age for improvement of prediction for cost of age i.e old people i . e correlation between age and cost
+#making new model for bmi and age 
+
+new_model <- train(charges ~ age+age^2 + children + bmi + bmi30*smoker +region, train_df, method= "lm")
+```
+
+```{r}
+summary(new_model)
+summary()
+cor(predict(new_model, test_df), real_charges)
+
+```
+
+```{r}
+saveRDS(new_model, "FinalModel.rds")
+  ```
+

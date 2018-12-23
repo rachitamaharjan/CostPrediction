@@ -1,0 +1,2 @@
+"0","sex_region_df <- as.data.frame(table(insurance$sex, insurance$region))"
+"0","ggplot(data=sex_region_df) +geom_col(aes(Var1,Freq,fill=Var1))+labs(x=""gender"",y=""count"",title = ""gender distribution on the basis of region"") +facet_wrap(~Var2)"

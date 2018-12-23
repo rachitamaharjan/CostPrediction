@@ -1,0 +1,11 @@
+"0","cor(predict(new_model, test_df), real_charges)
+"
+"1","    "
+"1","   charges"
+"1"," prediction"
+"1","
+[1,]"
+"1"," 0.8729587"
+"1","   0.923047"
+"1","
+"

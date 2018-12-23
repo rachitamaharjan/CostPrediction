@@ -1,0 +1,4 @@
+"0","library(ggplot2)"
+"0","avg_charge <-rename(avg_charge, charge = ""mean(charges)"")"
+"2","Error: could not find function ""rename""
+"
